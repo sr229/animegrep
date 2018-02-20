@@ -89,7 +89,7 @@ function getsubs
 	#echo "CFILE is "$CFILE"";
 	#echo "extracting subs from $1 track ${TRACK} to out/subs.srt";
 	mkvextract tracks "$1" ${TRACK}:out/subs.srt;
-	grepsubs "$1" "$CFILE";
+	grepsubs -i "$1" "$CFILE";
 }
 
 function grepsubs
