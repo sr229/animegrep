@@ -116,7 +116,7 @@ function parseline
 function cutvideo
 {
 	# $1 = file $2 = start time $3 = end time $4 = CFILE
-	ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -c:v libx264 -preset ultrafast out/clips/clip_"$x"_"$4".mkv < /dev/null
+	ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -c:v libx264 -preset ultrafast out/clips/clip_"$x".mkv < /dev/null
 }
 
 function merge
