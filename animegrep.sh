@@ -89,7 +89,7 @@ function getsubs
 	#echo "CFILE is "$CFILE"";
 	#echo "extracting subs from $1 track ${TRACK} to out/subs.srt";
 	mkvextract tracks "$1" ${TRACK}:out/subs.srt;
-	grepsubs -i "$1" "$CFILE";
+	grepsubs "$1" "$CFILE";
 }
 
 function grepsubs
@@ -100,7 +100,7 @@ function grepsubs
 		#echo "line in grep ${line}";
 		#parselinie $x "$1" $line;
 		parseline "$1" "$line" "$2";
-	done < <(grep "$WORD" out/subs.srt);
+	done < <(grep -i "$WORD" out/subs.srt);
 }
 
 function parseline
