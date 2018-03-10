@@ -1,4 +1,18 @@
 #!/bin/bash
+# Copyright Daniel Jones 2018
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # check for mkvextract
 command -v mkvextract >/dev/null 2>&1 || { echo >&2 "Requires mkvextract. Aborting."; exit; }
@@ -116,7 +130,12 @@ function parseline
 function cutvideo
 {
 	# $1 = file $2 = start time $3 = end time $4 = CFILE
-	ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -c:v libx264 -preset ultrafast out/clips/clip_"$x".mkv < /dev/null
+	
+	echo "$1" start time: "$2" end time: "$3" >> out/times.txt;
+
+	#ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -c:v libx264 -preset ultrafast out/clips/clip_"$x".mkv < /dev/null
+
+	#ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -map 0:0 -map 0:2 -c:v libx264 -preset ultrafast out/clips/clip_"$x".mkv < /dev/null;
 }
 
 function merge
