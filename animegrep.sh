@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright Daniel Jones 2018
+# Copyright Daniel Jones and Ayane Satomi 2019
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
