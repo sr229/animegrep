@@ -18,7 +18,7 @@
 set -eo pipefail
 
 # check for mkvextract
-command -v mkvextract >/dev/null 2>&1 || { echo >&2 "Requires mkvextract. Aborting."; exit; }
+command -v mkvextract >/dev/null 2>&1 || { echo >&2 "Requires mkvextract. Aborting."; exit 3; }
 
 POSITIONAL=();
 while [[ $# -gt 0 ]]
@@ -97,17 +97,6 @@ fi
 
 x=0;
 
-function getsubs
-{
-	# $1 = file
-	#echo "getting subs for "$1"";
-	rm out/subs.srt;
-	CFILE=$(basename "$1" .mkv);
-	#echo "CFILE is "$CFILE"";
-	#echo "extracting subs from $1 track ${TRACK} to out/subs.srt";
-	mkvextract tracks "$1" ${TRACK}:out/subs.srt;
-	grepsubs "$1" "$CFILE";
-}
 
 function grepsubs
 {
@@ -118,6 +107,18 @@ function grepsubs
 		#parselinie $x "$1" $line;
 		parseline "$1" "$line" "$2";
 	done < <(grep -i "$WORD" out/subs.srt);
+}
+
+function getsubs
+{
+	# $1 = file
+	#echo "getting subs for "$1"";
+	rm out/subs.srt;
+	CFILE=$(basename "$1" .mkv);
+	#echo "CFILE is "$CFILE"";
+	#echo "extracting subs from $1 track ${TRACK} to out/subs.srt";
+	mkvextract tracks "$1" ${TRACK}:out/subs.srt;
+	grepsubs "$1" "$CFILE";
 }
 
 function parseline
