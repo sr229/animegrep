@@ -46,7 +46,6 @@ do
 			shift;
 			;;
 		-m|--merge)
-			echo "merge"
 			MERGE=1;
 			shift;
 			;;
