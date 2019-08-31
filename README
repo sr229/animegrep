@@ -1,0 +1,27 @@
+====== ANIMEGREP ======
+
+(NOTE: This is a clone from https://git.danieljon.es/animegrep. Tree might be outdated.)
+
+animegrep is a bash script that extracts the subtitles from an mkv video file (main use for me is anime), greps them for a specified word, parses them and extracts only that time frame from the source video file. The script outputs the clips created to out/clips.
+
+=======================
+
+====== USAGE =========
+
+-f <file> / --file <file>  the file you want to extract clips from
+
+-d <directory> / --directory  the directory you want to extract clips from (it does all the MKVs in the directory)
+
+-w <word> / --word <word>   the phrase you are grepping for
+
+-m / --merge    merge all files in one file.
+
+======================
+
+===== COPYRIGHT =====
+
+COPYRIGHT Daniel Jones, Licensed under GPL Version 2. See COPYING for details.
+
+This mirror is maintained by Ayane Satomi.
+
+=====================
