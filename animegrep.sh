@@ -46,8 +46,8 @@ do
 			shift;
 			;;
 		-m|--merge)
+			echo "merge"
 			MERGE=1;
-			shift;
 			shift;
 			;;
 	esac
@@ -56,43 +56,45 @@ set -- "{$POSITIONAL[@]}";
 
 # check if out directory exists
 # TODO handle case out exists but other subdirs don't
-if [ ! -d "out" ]; then
-	echo "making out directory..";
-	mkdir out;
-	mkdir out/clips;
-fi
+if [ -z "$MERGE" ]; then
 
-if ! [[ -z $FILE || -z $DIRECTORY ]]; then
-	echo "You have both -d and -f set.. choose one, not both..";
-	exit;
-fi
+	if [ ! -d "out" ]; then
+		echo "making out directory..";
+		mkdir out;
+		mkdir out/clips;
+	fi
 
-if [[ -z $FILE && -z $DIRECTORY ]]; then
-	echo "no file or directory provided (use -f [file] or -d [dir])..";
-	exit;
-fi
+	if ! [[ -z $FILE || -z $DIRECTORY ]]; then
+		echo "You have both -d and -f set.. choose one, not both..";
+		exit;
+	fi
 
-if [ -z "$TRACK" ]; then
-	#assume subtitle track = 2
-	echo "track not set (use -t [truck number]). You kind find the subtitle track number using 'mkvinfo [file]'..";
-	exit;
-fi
+	if [[ -z $FILE && -z $DIRECTORY ]]; then
+		echo "no file or directory provided (use -f [file] or -d [dir])..";
+		exit;
+	fi
 
-if [ -z "$WORD" ]; then
-	echo "no word set, using default word (use -w [word] to set the word)..";
-	WORD="idiot"; # baka~
-fi
+	if [ -z "$TRACK" ]; then
+		#assume subtitle track = 2
+		echo "track not set (use -t [truck number]). You kind find the subtitle track number using 'mkvinfo [file]'..";
+		exit;
+	fi
 
-if ! [ -z "$FILE" ]; then
-	#echo "using single file..";
-	SINGLEFILE=true;
-fi
+	if [ -z "$WORD" ]; then
+		echo "no word set, using default word (use -w [word] to set the word)..";
+		WORD="idiot"; # baka~
+	fi
 
-if ! [ -z "$DIRECTORY" ]; then
-	#echo "using directory";
-	SINGLEFILE=false;
-fi
+	if ! [ -z "$FILE" ]; then
+		#echo "using single file..";
+		SINGLEFILE=true;
+	fi
 
+	if ! [ -z "$DIRECTORY" ]; then
+		#echo "using directory";
+		SINGLEFILE=false;
+	fi
+fi
 # we're done the boring stuff
 
 x=0;
