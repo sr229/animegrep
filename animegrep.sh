@@ -114,7 +114,7 @@ function getsubs
 {
 	# $1 = file
 	#echo "getting subs for "$1"";
-	rm out/subs.srt;
+	rm out/subs.srt || true;
 	CFILE=$(basename "$1" .mkv);
 	#echo "CFILE is "$CFILE"";
 	#echo "extracting subs from $1 track ${TRACK} to out/subs.srt";
