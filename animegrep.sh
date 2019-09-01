@@ -49,8 +49,7 @@ while getopts d:f:t:w:m:h opt; do
 done 
 shift $(($OPTIND -1))
 
-POSITIONAL="$@"
-
+set -- "{$POSITIONAL[@]}";
 
 # check for mkvextract
 command -v mkvextract >/dev/null 2>&1 || { echo >&2 "Requires mkvextract. Aborting."; exit 3; }
@@ -67,9 +66,9 @@ if [ -z "$MERGE" ]; then
 
 	if ! [ -z "$FILE" ] || [ -z "$DIRECTORY" ]; then
 		echo "You have both -d and -f set.. choose one, not both..";
-		exit;
+		exit 127;
 	fi
-	
+
 	if [ -z "$FILE"  ] && [ -z "$DIRECTORY" ]; then
 		echo "no file or directory provided (use -f [file] or -d [dir])..";
 		exit;
