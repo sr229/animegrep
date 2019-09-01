@@ -53,6 +53,8 @@ set -- "{$POSITIONAL[@]}";
 
 # check for mkvextract
 command -v mkvextract >/dev/null 2>&1 || { echo >&2 "Requires mkvextract. Aborting."; exit 3; }
+# check for ffmpeg
+command -v ffmpeg >/dev/null 2>&1 || { echo >&2 "Requires ffmpeg. Aborting."; exit 3; }
 
 # check if out directory exists
 # TODO handle case out exists but other subdirs don't
@@ -144,7 +146,7 @@ cutvideo() {
 merge() {
 	echo "merging mkv's..";
 	ls -Q out/clips | grep -E "\.mkv" | sed -e "s/^/file /g" > video_files.txt;
-	ffmpeg -f concat -i video_files.txt out/out.mkv;
+	ffmpeg -f concat -safe 0 -i video_files.txt out/out.mkv;
 	rm video_files.txt
 }
 
