@@ -17,42 +17,42 @@
 # Make sure the script fails if the other commands fail as well
 set -eo pipefail
 
+print_help() {
+	echo "$0 [-d <directory> | -f <file> ] -t <track> -w <WORD> -m -h "
+	echo ""
+	echo "animegrep is a bash script that extracts the subtitles from an mkv video file, greps them for a specified word, parses them and extracts only that time frame from the source video file"
+	echo ""
+	echo "-d <directory> sets a directory as your source media"
+	echo "-f <file> sets a file as your source media. You cannot set directory and files at the same time."
+	echo "-t <track> Not Documented. "
+	echo "-w <word> track number for your source media."
+	echo "-m to merge multiple output files as one. Useful if you have -d set."
+}
+
+POSITIONAL=();
+
+if [ -z "$@" ]; then 
+  print_help
+  exit 3;
+fi
+
+while getopts d:f:t:w:m:h opt; do
+  case "${opt}" in
+	d) DIRECTORY="${OPTARG}" ;;
+	f) FILE="${OPTARG}" ;;
+	t) TRACK="${OPTARG}" ;;
+	w) WORD="${OPTARG}" ;;
+	m) MERGE=1 ;;
+	h) print_help; exit 0 ;;
+	*) print_help; exit 3 ;;
+   esac 
+done 
+shift $(($OPTIND -1))
+
+set -- "{$POSITIONAL[@]}";
+
 # check for mkvextract
 command -v mkvextract >/dev/null 2>&1 || { echo >&2 "Requires mkvextract. Aborting."; exit 3; }
-
-# TODO: convert this to getopts so we don't have to set it the hackiest way possible.
-POSITIONAL=();
-while [[ "$#" -gt 0 ]]
-do
-	key="$1";
-	case $key in
-		-d|--directory)
-			DIRECTORY="$2";
-			shift;
-			shift;
-			;;
-		-f|--file)
-			FILE="$2";
-			shift;
-			shift;
-			;;
-		-t|--track)
-			TRACK="$2";
-			shift;
-			shift;
-			;;
-		-w|--word)
-			WORD="$2";
-			shift;
-			shift;
-			;;
-		-m|--merge)
-			MERGE=1;
-			shift;
-			;;
-	esac
-done
-set -- "{$POSITIONAL[@]}";
 
 # check if out directory exists
 # TODO handle case out exists but other subdirs don't
@@ -64,12 +64,12 @@ if [ -z "$MERGE" ]; then
 		mkdir out/clips;
 	fi
 
-	if ! [[ -z "$FILE" ]] || [[ -z "$DIRECTORY" ]]; then
+	if ! [ -z "$FILE" ] || [ -z "$DIRECTORY" ]; then
 		echo "You have both -d and -f set.. choose one, not both..";
-		exit;
+		exit 127;
 	fi
 
-	if [[ -z "$FILE"  ]] && [[ -z "$DIRECTORY" ]]; then
+	if [ -z "$FILE"  ] && [ -z "$DIRECTORY" ]; then
 		echo "no file or directory provided (use -f [file] or -d [dir])..";
 		exit;
 	fi
@@ -155,12 +155,12 @@ if ! [ -z "$MERGE" ]; then
 	exit;
 fi
 
-if [ $SINGLEFILE == true ]; then
+if [ "$SINGLEFILE" == true ]; then
 	echo "doing one file";
 	getsubs "$FILE";
 fi
 
-if [ $SINGLEFILE == false ]; then
+if [ "$SINGLEFILE" == false ]; then
 	for f in "$DIRECTORY"/*.mkv; do
 		getsubs "$f";
 	done;
