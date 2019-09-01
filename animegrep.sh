@@ -136,7 +136,7 @@ cutvideo() {
 	
 	echo "$1" start time\: "$2" end time: "$3" >> out/times.txt;
 
-	ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -c:v libx264 -preset veryslow out/clips/clip_"$x".mkv < /dev/null
+	ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -c:v libx264 -preset ultrafast out/clips/clip_"$x".mkv < /dev/null
 
 	#ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -map 0:0 -map 0:2 -c:v libx264 -preset ultrafast out/clips/clip_"$x".mkv < /dev/null;
 }
