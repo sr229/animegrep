@@ -43,7 +43,7 @@ while getopts d:f:t:w:m:h opt; do
 	t) TRACK="${OPTARG}" ;;
 	w) WORD="${OPTARG}" ;;
 	m) MERGE=1 ;;
-	h) print_help ;;
+	h) print_help; exit 0 ;;
 	*) print_help; exit 3 ;;
    esac 
 done 
