@@ -146,18 +146,9 @@ function cutvideo
 function merge
 {
 	echo "merging mkv's..";
-	str=();
-	x=0;
-	for f in out/clips/*.mkv; do
-		if [ $x == 0 ]; then
-			str+=""$f"";
-		fi
-		if [ $x != 0 ]; then
-			str+=" +"$f"";
-		fi
-		((x++)) || true;
-	done;
-	mkvmerge $str -o out/out.mkv
+	ls -Q out/clips | grep -E "\.mkv" | sed -e "s/^/file /g" > video_files.txt;
+	ffmpeg -f concat -i video_files.txt out/out.mkv;
+	rm video_files.txt
 }
 
 # getsubs function will run the chain that does the whole process
