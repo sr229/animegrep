@@ -38,7 +38,7 @@ fi
 
 while getopts d:f:t:w:m:h opt; do
   case "${opt}" in
-    d) DIRECTORY="${OPTARG}" ;;
+	d) DIRECTORY="${OPTARG}" ;;
 	f) FILE="${OPTARG}" ;;
 	t) TRACK="${OPTARG}" ;;
 	w) WORD="${OPTARG}" ;;
