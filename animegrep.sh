@@ -31,12 +31,12 @@ print_help() {
 
 POSITIONAL=();
 
-if [ -z "$@" ]; then 
+if [ -z "$@" ]; then
   print_help
   exit 3;
 fi
 
-while getopts d:f:t:w:m:h opt; do
+while getopts d:f:t:w:mh opt; do
   case "${opt}" in
 	d) DIRECTORY="${OPTARG}" ;;
 	f) FILE="${OPTARG}" ;;
@@ -45,8 +45,8 @@ while getopts d:f:t:w:m:h opt; do
 	m) MERGE=1 ;;
 	h) print_help; exit 0 ;;
 	*) print_help; exit 3 ;;
-   esac 
-done 
+   esac
+done
 shift $(($OPTIND -1))
 
 set -- "{$POSITIONAL[@]}";
@@ -102,8 +102,7 @@ fi
 x=0;
 
 
-function grepsubs()
-{
+grepsubs() {
 	# $1 = file $2 = CFILE
 	while read -r line; do
 		((x++)) || true;
@@ -135,7 +134,7 @@ parseline() {
 
 cutvideo() {
 	# $1 = file $2 = start time $3 = end time $4 = CFILE
-	
+
 	echo "$1" start time\: "$2" end time: "$3" >> out/times.txt;
 
 	ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -c:v libx264 -preset ultrafast out/clips/clip_"$x".mkv < /dev/null
@@ -145,7 +144,7 @@ cutvideo() {
 
 merge() {
 	echo "merging mkv's..";
-	ls -Q out/clips | grep -E "\.mkv" | sed -e "s/^/file /g" > video_files.txt;
+	ls -Q out/clips | sort -V | grep -E "\.mkv" | sed -e "s/^/file /g" > video_files.txt;
 	ffmpeg -f concat -safe 0 -i video_files.txt out/out.mkv;
 	rm video_files.txt
 }
