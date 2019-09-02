@@ -31,11 +31,6 @@ print_help() {
 
 POSITIONAL=();
 
-if [ -z "$@" ]; then
-  print_help
-  exit 3;
-fi
-
 while getopts d:f:t:w:mh opt; do
   case "${opt}" in
 	d) DIRECTORY="${OPTARG}" ;;
@@ -78,7 +73,7 @@ if [ -z "$MERGE" ]; then
 
 	if [ -z "$TRACK" ]; then
 		#assume subtitle track = 2
-		echo "track not set (use -t [truck number]). You kind find the subtitle track number using 'mkvinfo [file]'..";
+		echo "track not set (use -t [track number]). You kind find the subtitle track number using 'mkvinfo [file]'..";
 		exit 3;
 	fi
 
