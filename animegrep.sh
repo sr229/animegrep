@@ -46,20 +46,9 @@ shift $(($OPTIND -1))
 
 set -- "{$POSITIONAL[@]}";
 
-# check for mkvextract
-command -v mkvextract >/dev/null 2>&1 || { echo >&2 "Requires mkvextract. Aborting."; exit 3; }
-# check for ffmpeg
-command -v ffmpeg >/dev/null 2>&1 || { echo >&2 "Requires ffmpeg. Aborting."; exit 3; }
-
 # check if out directory exists
 # TODO handle case out exists but other subdirs don't
 if [ -z "$MERGE" ]; then
-
-	if [ ! -d "out" ]; then
-		echo "making out directory..";
-		mkdir out;
-		mkdir out/clips;
-	fi
 
 	if [ ! -z "$FILE" ] && [ ! -z "$DIRECTORY" ]; then
 		echo "You have both -d and -f set.. choose one, not both..";
@@ -93,6 +82,20 @@ if [ -z "$MERGE" ]; then
 	fi
 fi
 # we're done the boring stuff
+
+
+# check for mkvextract
+command -v mkvextract >/dev/null 2>&1 || { echo >&2 "Requires mkvextract. Aborting."; exit 3; }
+# check for ffmpeg
+command -v ffmpeg >/dev/null 2>&1 || { echo >&2 "Requires ffmpeg. Aborting."; exit 3; }
+
+
+if [ ! -d "out" ]; then
+	echo "making out directory..";
+	mkdir out;
+	mkdir out/clips;
+fi
+
 
 x=0;
 
