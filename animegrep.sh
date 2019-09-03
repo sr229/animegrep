@@ -61,7 +61,7 @@ if [ -z "$MERGE" ]; then
 		mkdir out/clips;
 	fi
 
-	if ! [ -z "$FILE" ] || [ -z "$DIRECTORY" ]; then
+	if [ ! -z "$FILE" ] && [ ! -z "$DIRECTORY" ]; then
 		echo "You have both -d and -f set.. choose one, not both..";
 		exit 127;
 	fi
