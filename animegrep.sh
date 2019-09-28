@@ -84,8 +84,6 @@ fi
 # we're done the boring stuff
 
 
-# check for mkvextract
-command -v mkvextract >/dev/null 2>&1 || { echo >&2 "Requires mkvextract. Aborting."; exit 3; }
 # check for ffmpeg
 command -v ffmpeg >/dev/null 2>&1 || { echo >&2 "Requires ffmpeg. Aborting."; exit 3; }
 
@@ -117,7 +115,14 @@ getsubs() {
 	CFILE=$(basename "$1" .mkv);
 	#echo "CFILE is "$CFILE"";
 	#echo "extracting subs from $1 track ${TRACK} to out/subs.srt";
-	mkvextract tracks "$1" ${TRACK}:out/subs.srt;
+	#mkvextract tracks "$1" ${TRACK}:out/subs.srt;
+
+	if [ -z "$TRACK" ]; then
+    	ffmpeg -i "$1" out/subs.srt;
+	else 
+	    ffmpeg -i "$1" -map "$TRACK:n" out/subs.srt;
+	fi
+	
 	grepsubs "$1" "$CFILE";
 }
 
