@@ -32,14 +32,14 @@ print_help() {
 POSITIONAL=();
 
 while getopts d:f:t:w:mh opt; do
-  case "${opt}" in
-	d) DIRECTORY="${OPTARG}" ;;
-	f) FILE="${OPTARG}" ;;
-	t) TRACK="${OPTARG}" ;;
-	w) WORD="${OPTARG}" ;;
-	m) MERGE=1 ;;
-	h) print_help; exit 0 ;;
-	*) print_help; exit 3 ;;
+	case "${opt}" in
+		d) DIRECTORY="${OPTARG}" ;;
+		f) FILE="${OPTARG}" ;;
+		t) TRACK="${OPTARG}" ;;
+		w) WORD="${OPTARG}" ;;
+		m) MERGE=1 ;;
+		h) print_help; exit 0 ;;
+		*) print_help; exit 3 ;;
    esac
 done
 shift $(($OPTIND -1))
@@ -102,8 +102,6 @@ grepsubs() {
 	# $1 = file $2 = CFILE
 	while read -r line; do
 		((x++)) || true;
-		#echo "line in grep ${line}";
-		#parselinie $x "$1" $line;
 		parseline "$1" "$line" "$2";
 	done < <(grep -i "$WORD" out/subs.srt);
 }
@@ -113,14 +111,11 @@ getsubs() {
 	#echo "getting subs for "$1"";
 	rm out/subs.srt || true;
 	CFILE=$(basename "$1" .mkv);
-	#echo "CFILE is "$CFILE"";
-	#echo "extracting subs from $1 track ${TRACK} to out/subs.srt";
-	#mkvextract tracks "$1" ${TRACK}:out/subs.srt;
 
 	if [ -z "$TRACK" ]; then
-    	ffmpeg -i "$1" out/subs.srt;
+		ffmpeg -i "$1" out/subs.srt;
 	else 
-	    ffmpeg -i "$1" -map "$TRACK:n" out/subs.srt;
+		ffmpeg -i "$1" -map "$TRACK:n" out/subs.srt;
 	fi
 	
 	grepsubs "$1" "$CFILE";
@@ -136,13 +131,9 @@ parseline() {
 }
 
 cutvideo() {
-	# $1 = file $2 = start time $3 = end time $4 = CFILE
-
 	echo "$1" start time\: "$2" end time: "$3" >> out/times.txt;
 
 	ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -c:v libx264 -preset ultrafast out/clips/clip_"$x".mkv < /dev/null
-
-	#ffmpeg -i "$1" -ss 0"$2" -to 0"$3" -async 1 -map 0:0 -map 0:2 -c:v libx264 -preset ultrafast out/clips/clip_"$x".mkv < /dev/null;
 }
 
 merge() {
